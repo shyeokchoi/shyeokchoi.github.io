@@ -1,0 +1,353 @@
+---
+title:  "01.DATA LAB"
+
+categories:
+  - csapp
+tags:
+  - [CS, csapp]
+
+toc: true
+toc_sticky: true
+ 
+date: 2022-07-23
+last_modified_at: 2022-07-23
+---
+
+# Integer
+## bitXor
+```c
+/* 
+ * bitXor - x^y using only ~ and & 
+ *   Example: bitXor(4, 5) = 1
+ *   Legal ops: ~ &
+ *   Max ops: 14
+ *   Rating: 1
+ */
+int bitXor(int x, int y) {
+  return (~x & y) | (x & ~y);
+}
+```  
+## tmin
+```c
+/* 
+ * tmin - return minimum two's complement integer 
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 4
+ *   Rating: 1
+ */
+int tmin(void) {
+  return 1 << 31;
+}
+```
+## isTmax
+```c
+/*
+ * isTmax - returns 1 if x is the maximum, two's complement number,
+ *     and 0 otherwise 
+ *   Legal ops: ! ~ & ^ | +
+ *   Max ops: 10
+ *   Rating: 1
+ */
+int isTmax(int x) {
+  int tmin = 1 << 31;
+  int negOne = x^tmin;
+  int zero = ~negOne;
+  return !zero;
+}
+```
+만약 x가 Tmax(즉, `0111...1`)이라면 negOne은 -1(즉, `111...1`)이 될 것이고 변수 zero는 0이 된다.
+## allOddBits
+```c
+/* 
+ * allOddBits - return 1 if all odd-numbered bits in word set to 1
+ *   where bits are numbered from 0 (least significant) to 31 (most significant)
+ *   Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 2
+ */
+int allOddBits(int x) {
+  int original = x;
+  int mask = 0xAA;
+  x |= mask;
+  x |= mask << 8;
+  x |= mask << 16;
+  x |= mask << 24;
+  return !(original ^ x);
+}
+```
+mask(`0000 0000 0000 0000 0000 0000 1010 1010`)를 shifting해가며 `|`연산을 한 결과가 원래의 x와 같다면 모든 odd-numbered bits가 1인 것이다.
+## negate
+```c
+/* 
+ * negate - return -x 
+ *   Example: negate(1) = -1.
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 5
+ *   Rating: 2
+ */
+int negate(int x) {
+  return ~x+1;
+}
+```
+## isAsciiDigit
+```c
+/* 
+ * isAsciiDigit - return 1 if 0x30 <= x <= 0x39 (ASCII codes for characters '0' to '9')
+ *   Example: isAsciiDigit(0x35) = 1.
+ *            isAsciiDigit(0x3a) = 0.
+ *            isAsciiDigit(0x05) = 0.
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 15
+ *   Rating: 3
+ */
+int isAsciiDigit(int x) {
+  int mask1 = 0x30; //0...0110000
+  int mask2 = 0x38; //0...0111000
+  int flag1 = !(((x>>3)<<3)^mask1);
+  int flag2 = !(((x>>1)<<1)^mask2);
+  return flag1 | flag2;
+}
+```
+0x30 <= x <= 0x39 이려면 x의 마지막 6개 비트가 `110___`이거나 `11100_`(여기서 `_`는 0또는 1을 의미)이고 나머지 비트는 모두 `0`이어야 한다.
+## conditional
+```c
+/* 
+ * conditional - same as x ? y : z 
+ *   Example: conditional(2,4,5) = 4
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 16
+ *   Rating: 3
+ */
+int conditional(int x, int y, int z) {
+  return ((~(!!x)+1)&y) + ((~(!x)+1)&z);
+}
+```
+만약 x가 `true`라면 y를, `false`라면 z를 return
+## isLessOrEqual
+```c
+/* 
+ * isLessOrEqual - if x <= y  then return 1, else return 0 
+ *   Example: isLessOrEqual(4,5) = 1.
+ *   Legal ops: ! ~ & ^ | + << >>
+ *   Max ops: 24
+ *   Rating: 3
+ */
+int isLessOrEqual(int x, int y) {
+  int sx = x >> 31;
+  int sy = y >> 31;
+  int negX = ~x + 1;
+  int yMinX = y + negX; //y - x
+  int flag = !(yMinX >> 31);
+  //check overflow
+  flag = ((!sy) & sx) | flag; //check overflow when y>=0, x<0. if overflow, flag = 1;
+  flag = ((!sy) | sx) & flag; //check overflow when y<0, x>=0. if overflow, flag = 0;
+  return flag;
+}
+```
+y-x의 부호를 따지고, overflow가 일어났는지 확인해주면 된다.
+## logicalNeg
+```c
+/* 
+ * logicalNeg - implement the ! operator, using all of 
+ *              the legal operators except !
+ *   Examples: logicalNeg(3) = 0, logicalNeg(0) = 1
+ *   Legal ops: ~ & ^ | + << >>
+ *   Max ops: 12
+ *   Rating: 4 
+ */
+int logicalNeg(int x) { 
+  int xComp = ~x;
+  int sxComp = (xComp >> 31) & 1;
+  int negX = ~x + 1;
+  int snegX =(negX >> 31) & 1;
+  return sxComp & (~snegX);
+}
+```
+0과 다른 숫자들의 차이가 뭔지를 생각해보았다.  
+0은 부호를 바꿔주는 `~x + 1` 연산을 할 때, `~x`는 음수이고 `~x + 1`은 양수이다.  
+tMin(`100...0`)의 경우 `~x`는 양수이고 `~x + 1`은 음수이다.  
+그 외의 숫자들은 `~x`와 `~x + 1`의 부호가 같다.  
+이런 특성을 생각해 `~x`와 `~x + 1` 부호를 기준으로 함수를 작성하였다.
+## howManyBits
+```c
+/* howManyBits - return the minimum number of bits required to represent x in
+ *             two's complement
+ *  Examples: howManyBits(12) = 5
+ *            howManyBits(298) = 10
+ *            howManyBits(-5) = 4
+ *            howManyBits(0)  = 1
+ *            howManyBits(-1) = 1
+ *            howManyBits(0x80000000) = 32
+ *  Legal ops: ! ~ & ^ | + << >>
+ *  Max ops: 90
+ *  Rating: 4
+ */
+int howManyBits(int x) {
+  //x = (x < 0) ? ~x : x;
+  int negativeFlag = x >> 31;
+  int yResult = ~x & negativeFlag;
+  int zResult = x & (~negativeFlag);
+  int newX = yResult + zResult;
+  // right align & fill with ones
+  int full1s = newX | newX >> 16;
+  full1s = full1s | full1s >> 8;
+  full1s = full1s | full1s >> 4;
+  full1s = full1s | full1s >> 2;
+  full1s = full1s | full1s >> 1;
+  // count ones
+  int count = (full1s & 0x55555555) + ((full1s >> 1) & 0x55555555);
+  count = (count & 0x33333333) + ((count >> 2) & 0x33333333);
+  count = (count & 0x0F0F0F0F) + ((count >> 4) & 0x0F0F0F0F);
+  count = (count & 0x00FF00FF) + ((count >> 8) & 0x00FF00FF);
+  count = (count & 0x0000FFFF) + ((count >> 16) & 0x0000FFFF);
+  // plus one (sign bit)
+  return count + 1;
+}
+```  
+이 문제는 너무 어려워서 결국 다른 사람의 코드를 참고하였다. (https://terra-incognita.dev/blog/csapp-datalab-new/)  
+핵심은 `x`의 절댓값을 구하고, 그 절댓값의 leftmost 1 bit를 기준으로 그 오른쪽 비트들은 모두 1로 바꿔준 후 1이 몇개 있는지 세는 것이다.  
+
+# Float
+## floatScale2
+```c
+/* 
+ * floatScale2 - Return bit-level equivalent of expression 2*f for
+ *   floating point argument f.
+ *   Both the argument and result are passed as unsigned int's, but
+ *   they are to be interpreted as the bit-level representation of
+ *   single-precision floating point values.
+ *   When argument is NaN, return argument
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 30
+ *   Rating: 4
+ */
+unsigned floatScale2(unsigned uf) {
+  unsigned exp = (uf >> 23) & 0xFF;
+  
+  //special case(infinity, NaN)
+  if (exp == 0xFF) {
+    return uf;
+  }
+
+  //Denormalized
+  else if (exp == 0) {
+    unsigned suf = uf & 0x80000000;
+    return suf | (uf << 1);
+  }
+
+  //Normalized
+  else{
+    return uf + 0x00800000;
+  }
+}
+```
+denormalized의 경우 sign bit만 빼고 left shift를 1회 시행해주면 된다.  
+normalized의 경우 exponential part에 1을 더해주면 된다.
+## floatFloat2Int
+```c
+/* 
+ * floatFloat2Int - Return bit-level equivalent of expression (int) f
+ *   for floating point argument f.
+ *   Argument is passed as unsigned int, but
+ *   it is to be interpreted as the bit-level representation of a
+ *   single-precision floating point value.
+ *   Anything out of range (including NaN and infinity) should return
+ *   0x80000000u.
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. also if, while
+ *   Max ops: 30
+ *   Rating: 4
+ */
+int floatFloat2Int(unsigned uf) {
+  int exp = (uf >> 23) & 0xFF;
+  int E = exp - 127; //여기서 실수로 unsigned로 써서 에러났었음.
+  unsigned frac = uf & 0x7FFFFF;
+  unsigned newFrac = (1 << 23) + frac;
+  unsigned sign = (uf >> 31) & 1;
+  
+  //special case(infinity, NaN)
+  if (exp == 0xFF) {
+    return 0x80000000u;
+  }
+
+  //Denormalized
+  else if (exp == 0) {
+    return 0;
+  }
+
+  //Normalized
+  else {
+    if (E < 0) {
+      return 0;
+    }
+    else {
+        if (E>=31) { 
+          return 0x80000000u;
+        }
+        else if (E>=23) {
+          newFrac = newFrac << (E - 23);
+        }
+        else {
+          newFrac = newFrac >> (23 - E); 
+        }
+    }
+    return sign ? -newFrac : newFrac;
+  }
+}
+```
+special case의 경우 문제의 요구사항대로 처리해 주었다.  
+denormalized의 경우 항상 (-1, 1)에 값이 존재하고 C언어에서 float to int casting은 round to zero로 작동하므로 항상 0을 return해주면 된다.  
+normalized의 경우에서 헷갈려서 고민을 꽤나 했다.  
+IEEE에 따라 normalized의 경우  
+\\[
+f= (-1)^s \times M \times 2^E  
+s = sign Bit  
+E = exp - 127  
+M = 1 + frac  
+\\]
+로 실수를 표기한다.  
+(exp, sign Bit, frac, M 등은 기본적으로 CS:APP 교재에 있는 notation을 따른다.)  
+여기에서 E>=31이라면 우리가 표현하고자 하는 int 자료형 범위를 넘어선다. 문제의 요구사항대로 처리했다.  
+31>E>=23일 때, 위의 수식에 따라 \\(M \times 2^{23}\\) 의 의미로 newFrac 변수를 만들었다.  
+이후 E - 23만큼 더 left shift 해주면 f의 정수부만 취할 수 있다.  
+예를 들어, E가 25라면 \\(M \times 2^{23} \times 2^{25-23}\\) 인 것이다.  
+23>E일 때는 반대로 하면 된다.  
+마지막으로 sign에 따라 부호를 결정하고 return 해 주었다.  
+</br>
+처음 이 문제를 풀 때 자꾸 소숫점 아래를 삭제하고 정수부만 반환하는 것을 나에게 익숙한 십진수 체계에 맞춰서 생각하려니까 굉장히 헷갈렸다.  
+고민을 하다가 어느순간 굳이 그렇게 생각할 필요 없이 소숫점 아래도 이진수로 생각하면 훨씬 간단하다는 것을 깨달았다.  
+</br>
+또, 지금은 수정했지만 처음에 (교재에서 저자가 그렇게 조심하라고 강조했는데도) `exp`와 `E` 변수를 `int`가 아닌 `unsigned`로 써서 조건문 분기에서 버그가 생겼었다. 반성해야한다..
+## floatPower2
+```c
+/* 
+ * floatPower2 - Return bit-level equivalent of the expression 2.0^x
+ *   (2.0 raised to the power x) for any 32-bit integer x.
+ *
+ *   The unsigned value that is returned should have the identical bit
+ *   representation as the single-precision floating-point number 2.0^x.
+ *   If the result is too small to be represented as a denorm, return
+ *   0. If too large, return +INF.
+ * 
+ *   Legal ops: Any integer/unsigned operations incl. ||, &&. Also if, while 
+ *   Max ops: 30 
+ *   Rating: 4
+ */
+unsigned floatPower2(int x) {
+  //norm
+  if (x>=128) {
+    return 0x7F800000;
+  }
+  else if (x>=-126) {
+    return (x + 127) << 23;
+  }
+  //denorm
+  else if (x>=-149) {
+    int expOf2 = x + 126;
+    return 1 << (23 + expOf2);
+  }
+  else {
+    return 0;
+  }
+}
+```
