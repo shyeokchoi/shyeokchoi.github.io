@@ -107,7 +107,7 @@ analytics:
 author:
   name             : "최성혁"
   avatar           : "/assets/images/bio-photo.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "개발자 지망생\nSNU ECONOMICS & Artificial Intelligence"
+  bio              : "개발자 지망생"
   location         : "South Korea"
   email            :
   links:
