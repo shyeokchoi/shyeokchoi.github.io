@@ -27,10 +27,10 @@ int main(int argc, char *argv[]) {
 ```  
 이런 식이다.  
   
-`argc`(argument count)는 `command line arguemnts`의 수(프로그램 자체의 이름을 포함해서)이다.  
-`argv`(argument vector)는 문자열 형태로 저장된 `command line arguments`를 가리키는 포인터의 배열이다.  
-`argv[argc]`에는 항상 `null pointer`가 저장되어 있다.  
-즉, `ls -1 remind.c`를 터미널에서 시행했다면, `argc`는 `3`이고, `argv`는 다음과 같은 구조가 된다.  
+`argc`(argument count)는 `command line arguemnts`의 수(프로그램 자체의 이름을 포함해서)이다.   
+`argv`(argument vector)는 문자열 형태로 저장된 `command line arguments`를 가리키는 포인터의 배열이다.   
+`argv[argc]`에는 항상 `null pointer`가 저장되어 있다.   
+즉, `ls -1 remind.c`를 터미널에서 시행했다면, `argc`는 `3`이고, `argv`는 다음과 같은 구조가 된다.   
 ![image](https://user-images.githubusercontent.com/106307725/183884522-d2c2786e-539c-4506-a1b6-2cebacdc2b83.png)  
 즉, `command line arguments`를 순차적으로 출력하는 코드는 다음과 같다.  
 ```c
