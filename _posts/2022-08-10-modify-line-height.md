@@ -6,8 +6,8 @@ categories:
 tags:
   - [blog, minimal mistakes, Github Pages]
 
-toc: true
-toc_sticky: true
+#toc: true
+#toc_sticky: true
  
 date: 2022-08-10
 last_modified_at: 2022-08-10
