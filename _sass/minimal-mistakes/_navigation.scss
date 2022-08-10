@@ -149,14 +149,15 @@
     }
 
     &:first-child {
-      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
 
     &:last-child {
-      margin-left: -1px;
+      //margin-left: -1px;
+      margin-bottom: 1em;
       border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-top-right-radius: 0;
     }
 
     &.disabled {
