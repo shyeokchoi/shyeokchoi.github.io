@@ -116,9 +116,16 @@
       }
     }
   }
+}
+.pagination_prev_next {
+  @include clearfix();
+  float: left;
+  width: 100%;
 
   /* next/previous buttons */
   &--pager {
+    margin-top: 0em;
+    padding-top: 0em;
     display: block;
     padding: 1em 2em;
     //float: left;
@@ -131,6 +138,11 @@
     color: $muted-text-color;
     border: 1px solid mix(#000, $border-color, 25%);
     border-radius: $border-radius;
+
+    .prev_next {
+      font-family: $cute;
+      color:#ffd861;
+    }
 
     &:hover {
       @include yiq-contrasted($muted-text-color);
