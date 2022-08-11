@@ -161,6 +161,7 @@
       border-top-right-radius: 0;
     }
     &.disabled-first-child {
+      margin-top: 1em;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       color: rgba($muted-text-color, 0.5);
