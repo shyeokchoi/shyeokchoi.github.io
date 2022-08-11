@@ -12,7 +12,7 @@ tags:
 date: 2022-08-10
 last_modified_at: 2022-08-10
 ---
-
+# Command Line Argument
 터미널에서 프로그램을 실행하면서 사용자로부터 정보를 받아와야 할 때가 있다.   
 `UNIX`의 `ls` 명령어의 경우, `ls`만 입력하면 현재 경로에 있는 파일들의 이름을 보여준다.   
 반면 `ls -1`으로 입력하면 파일들의 자세한 정보(크기, 소유자, 최종 수정시간 등)들을 출력한다.  
@@ -47,3 +47,27 @@ for (p = &argv[1]; *p != NULL; p++) {
     printf(%s\n", *p);
 }
 ```  
+
+# getopt()
+`getopt()` 함수는 `command line option`을 분석하는 데 도움을 주는 C 라이브러리 함수다.  
+```c
+int getopt(int argc, char *const argv[], const char *option);
+```  
+  
+`argc`와 `argv`에는 위에서 사용한 값을 그대로 넣어주면 된다.  
+`option`에는 옵션을 어떻게 분석할 것인지를 정해줄 수 있다. 만약 옵션이 'a' 또는 'l' 이라면 "al" 이라고 전달하면 된다. 옵션 뒤에 추가적인 인자를 받아오려면 ':'를 넣으면 된다. 예를 들어, 옵션 'a' 뒤에는 인자를 받아들이고 싶다면 "a:l"을 세번째 인자로 전달하면 되는 식이다.  
+이 `getopt()` 함수는 더 이상 옵션이 없을 때 `-1`을, 설정되지 않은 옵션이 들어왔을 때는 `?`를, 그 외에는 옵션값 자체를 반환하게 된다.  
+
+`getopt()`는 다음과 같은 변수들과 함께 활용할 수 있다.  
+  
+```c
+extern char *optarg;
+extern int opterr;
+extern int optind;
+extern int optopt;
+```  
+  
+- `optarg`: 해당 옵션 뒤에 오는 `command line argument`를 가리킨다. 예를 들어 `ls -l remind.c`의 예시에서 `getopt(argc, argv, "l:")`을 시행했다면 `optarg`는 "remind.c"라는 문자열을 가리킨다.
+- `opterr`: `getopt()`가 에러메시지를 발생시키지 않도록 하려면 `opterr`를 `0`으로 설정해주면 된다.
+- `optind`: 다음으로 처리할 `command line argument`의 index 값이다.
+- `optopt`: 가장 마지막으로 매칭된 `command line argument`
