@@ -6,13 +6,13 @@ categories:
 tags:
   - [C, csapp]
 
-#toc: true
-#toc_sticky: true
+toc: true
+toc_sticky: true
  
 date: 2022-08-10
 last_modified_at: 2022-08-10
 ---
-# Command Line Argument
+# Command Line Arguments
 터미널에서 프로그램을 실행하면서 사용자로부터 정보를 받아와야 할 때가 있다.   
 `UNIX`의 `ls` 명령어의 경우, `ls`만 입력하면 현재 경로에 있는 파일들의 이름을 보여준다.   
 반면 `ls -1`으로 입력하면 파일들의 자세한 정보(크기, 소유자, 최종 수정시간 등)들을 출력한다.  
@@ -70,4 +70,34 @@ extern int optopt;
 - `optarg`: 해당 옵션 뒤에 오는 `command line argument`를 가리킨다. 예를 들어 `ls -l remind.c`의 예시에서 `getopt(argc, argv, "l:")`을 시행했다면 `optarg`는 "remind.c"라는 문자열을 가리킨다.
 - `opterr`: `getopt()`가 에러메시지를 발생시키지 않도록 하려면 `opterr`를 `0`으로 설정해주면 된다.
 - `optind`: 다음으로 처리할 `command line argument`의 index 값이다.
-- `optopt`: 가장 마지막으로 매칭된 `command line argument`
+- `optopt`: 가장 마지막으로 매칭된 `command line argument`  
+  
+`getopt()`의 사용 예시는 다음과 같다.  
+```c
+int main(int argc, char *argv[]) {
+    int opt;
+    extern char* optarg;
+
+    while ((opt = getopt(argc, argv, "s:E:b:t:")) != -1) {
+        switch(opt) {
+            case 's':
+                //옵션이 's' 일때 할 작업
+                //예를 들어서, 's'뒤에 들어온 인자를 integer로 바꿔서 저장하고싶다면,
+                int s = atoi(optarg);
+                break;
+            case 'E':
+                //옵션이 'E' 일때 할 작업
+                break;
+            case 'b':
+                //옵션이 'b' 일때 할 작업
+                break;
+            case 't':
+                //옵션이 't' 일때 할 작업
+                break;
+            default:
+                //...
+                break;
+        }
+    }
+}
+```
