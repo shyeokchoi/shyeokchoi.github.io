@@ -1,5 +1,5 @@
 ---
-title:  "[C]  dynamic storage allocation"
+title:  "[C]  Dynamic Storage Allocation"
 
 categories:
   - C
