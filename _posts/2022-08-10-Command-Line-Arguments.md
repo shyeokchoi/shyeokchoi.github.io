@@ -12,7 +12,7 @@ toc_sticky: true
 date: 2022-08-10
 last_modified_at: 2022-08-10
 ---
-# Command Line Arguments
+# Command Line Arguments 란?
 터미널에서 프로그램을 실행하면서 사용자로부터 정보를 받아와야 할 때가 있다.   
 `UNIX`의 `ls` 명령어의 경우, `ls`만 입력하면 현재 경로에 있는 파일들의 이름을 보여준다.   
 반면 `ls -1`으로 입력하면 파일들의 자세한 정보(크기, 소유자, 최종 수정시간 등)들을 출력한다.  

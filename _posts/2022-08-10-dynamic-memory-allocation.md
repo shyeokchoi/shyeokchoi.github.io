@@ -12,7 +12,7 @@ toc_sticky: true
 date: 2022-08-10
 last_modified_at: 2022-08-10
 ---
-# 개요
+# Dynamic Storage Allocation 이란?
 C언어에선 배열의 크기가 컴파일시에 결정되고 고정된다. 하지만 때로는 런타임에 배열의 크기를 정해주고 싶거나 이미 정해진 배열의 크기를 바꾸고 싶을 때가 있다. 이때 필요한 것이 `dynamic memory allocation`이다.  
 C에서 지원하는 메모리 할당 함수는 크게 세 가지다.
 - `malloc()`: 메모리를 할당하지만 초기화는 하지 않음.
