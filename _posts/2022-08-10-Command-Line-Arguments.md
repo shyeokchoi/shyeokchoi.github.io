@@ -13,12 +13,13 @@ date: 2022-08-10
 last_modified_at: 2022-08-10
 ---
 
-터미널에서 프로그램을 실행하면서 사용자로부터 정보를 받아와야 할 때가 있다. 예를 들어, `UNIX`의 `ls` 명령어의 경우,  
-`ls`만 입력하면 현재 경로에 있는 파일들의 이름을 보여준다.  
+터미널에서 프로그램을 실행하면서 사용자로부터 정보를 받아와야 할 때가 있다.   
+`UNIX`의 `ls` 명령어의 경우, `ls`만 입력하면 현재 경로에 있는 파일들의 이름을 보여준다.   
 반면 `ls -1`으로 입력하면 파일들의 자세한 정보(크기, 소유자, 최종 수정시간 등)들을 출력한다.  
 `ls -1 remind.c`를 입력하면 `remind.c`라는 이름을 가진 파일의 자세한 정보를 출력한다.  
   
-이렇게 프로그램 실행과 함께 주어지는 정보를 `command line information`이라고 한다. 주어진 `command line arguments`(C standard에선 program parameters)에 접근하기 위해서는 `main()`함수에 두 개의 인자를 추가해야한다.  
+이렇게 프로그램 실행과 함께 주어지는 정보를 `command line information`이라고 한다.  
+주어진 `command line arguments` (C standard에선 program parameters)에 접근하기 위해서는 `main()`함수에 두 개의 인자를 추가해야한다.  
 필수적인건 아니지만, 관습적으로 `argc`와 `argv`를 사용한다.    
 ```c
 int main(int argc, char *argv[]) {
