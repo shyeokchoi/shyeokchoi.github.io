@@ -48,6 +48,7 @@ public static void main(String[] args) {
 위 main 함수의 Output은   
 > Parent.print()  
 > Parent.print()  
+
 가 된다.  
   
 `print()` 함수는 `static` 으로 선언되어 있기 때문에, static binding을 따른다. (override된 함수 제외하면 전부 static binding이다!) 그러므로 `child` 가 실제로 어떤 클래스의 인스턴스인지와는 상관 없이 컴파일 시점에 `child`의 explicit type인 `Parent` 클래스에 선언된 `print()` 를 호출하는 것으로 정해져있기 때문이다.   
@@ -110,6 +111,7 @@ public static void main(String[] args) {
 Output은  
 > Parent.print()  
 > Child.print()  
+
 가 된다.  
 Override 된 함수는 dynamic binding에 따라 actual type을 런타임에 참조하여 함수를 호출하기 때문이다.   
 ## 최종적인 예시 (Combination of Overloading, Overriding, and Hiding)
