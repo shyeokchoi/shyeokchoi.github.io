@@ -12,9 +12,7 @@ toc_sticky: true
 date: 2022-12-25
 last_modified_at: 2022-12-25
 ---
-# Comparable vs. Comparator
-
-## Comparable
+# Comparable
 
 User-defined object를 비교 가능하도록 만드는 interface이다.  
 `Comparable` 을 따르는 객체는 `Collections.sort()`로 정렬할 수 있다.  
@@ -27,7 +25,7 @@ User-defined object를 비교 가능하도록 만드는 interface이다.
   
 **기본적으로 `Collections.sort()`는 더 큰걸 뒤로 보낸다 (= 오름차순으로 정렬).**   
 따라서 `compareTo()`를 구현할 때 `obj1`과 `obj2`를 비교해서 `obj1`이 **뒤로** 가길 원하는 상황에 positive int를 반환하도록 하면 됨.  
-## Comparator
+# Comparator
 `compareTo` 보다 더 복잡한 서순을 구현하기에 적합하다.  
 `Comparable` 은 객체들간의 natural ordering을 따지기 위해 구현한다면, `Comparator`는 special ordering을 따지기에 적합하다.  
 `compare` 메서드에다가 순서를 어떻게 정할지를 구현해주면 된다.  
@@ -70,7 +68,7 @@ class Player {
 }
 ```  
 위의 예시에서 `NameComp`는 `Player`를 이름 기준 오름차순으로 정렬하게 되고, `IdComp`는 `Player`를 id 기준 오름차순으로 정렬하게 된다.   
-## TreeSet, TreeMap 등 순서가 유지되는 자료구조
+# TreeSet, TreeMap 등 순서가 유지되는 자료구조
 Natural Ordering 으로 정렬기준을 제시하려면:  
 - `Comparable`을 따르는 클래스를 타입으로 지정해주면 자동으로 해당 순서에 맞춰 정렬된다.  
   
