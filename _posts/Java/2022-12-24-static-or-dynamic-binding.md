@@ -14,20 +14,14 @@ last_modified_at: 2022-12-24
 ---
 # Binding (Explicit vs. Actual)
 
-`object.func()` 가 호출되었을 때, 컴파일러 또는 JVM은 `object` 를 보고 어떤 `func()` 를 호출할지 결정한다. 
-
-이 결정 방식에는 두 가지가 있다. 
-
-컴파일러가 결정한다면 Static Binding이라 부르고, JVM이 결정한다면 Dynamic Binding이라 한다.
-
+`object.func()` 가 호출되었을 때, 컴파일러 또는 JVM은 `object` 를 보고 어떤 `func()` 를 호출할지 결정한다.   
+이 결정 방식에는 두 가지가 있다.  
+컴파일러가 결정한다면 Static Binding이라 부르고, JVM이 결정한다면 Dynamic Binding이라 한다.  
 ## Static Binding
+컴파일 시점에 이미 어떤 타입을 참조해야할지 결정.  
 
-컴파일 시점에 이미 어떤 타입을 참조해야할지 결정.
-
-이 경우는 Explicit Type을 기준으로 어떤 클래스를 참조할지 결정한다. 즉, 선언할 때 변수의 타입이 중요하다.
-
-Override된 함수를 제외하고 나머지 함수들은 모두 static binding을 따른다.
-
+이 경우는 Explicit Type을 기준으로 어떤 클래스를 참조할지 결정한다. 즉, 선언할 때 변수의 타입이 중요하다.  
+Override된 함수를 제외하고 나머지 함수들은 모두 static binding을 따른다.  
 ```java
 class Parent() {
     static void print() {
@@ -51,25 +45,19 @@ public static void main(String[] args) {
 }
 ```
 
-위 main 함수의
-
-Output은 
-
+위 main 함수의 Output은   
 > Parent.print()  
 > Parent.print()
+가 된다.  
+  
+`print()` 함수는 `static` 으로 선언되어 있기 때문에, static binding을 따른다. (override된 함수 제외하면 전부 static binding이다!) 그러므로 `child` 가 실제로 어떤 클래스의 인스턴스인지와는 상관 없이 컴파일 시점에 `child`의 explicit type인 `Parent` 클래스에 선언된 `print()` 를 호출하는 것으로 정해져있기 때문이다.   
 
-가 된다.
+**참고**  
 
-`print()` 함수는 `static` 으로 선언되어 있기 때문에, static binding을 따른다. (override된 함수 제외하면 전부 static binding이다!) 그러므로 `child` 가 실제로 어떤 클래스의 인스턴스인지와는 상관 없이 컴파일 시점에 `child`의 explicit type인 `Parent` 클래스에 선언된 `print()` 를 호출하는 것으로 정해져있기 때문이다. 
-
-**참고**
-
-명시적으로 이루어지는 type casting은 explicit type을 바꿀 뿐, actual type에는 영향을 미치지 않는다.
-
-따라서 static binding에 의해 어떤 메서드를 호출할지를 바꿔주고 싶다면 type casting을 이용하면 되지만, casting후에도 dynamic binding의 결과는 여전히 똑같다.
-
-예시)
-
+명시적으로 이루어지는 type casting은 explicit type을 바꿀 뿐, actual type에는 영향을 미치지 않는다.  
+따라서 static binding에 의해 어떤 메서드를 호출할지를 바꿔주고 싶다면 type casting을 이용하면 되지만, casting후에도 dynamic binding의 결과는 여전히 똑같다.  
+  
+예시)  
 ```java
 class Point { static int x = 2; }
 class Test extends Point {
@@ -85,21 +73,15 @@ public static void main(String[] args) {
 		Test test = new Test(); 
 		test.printX();
 }
-```
-
-이 경우 output은 `4.7 2 2` 
-
-Type casting으로 `Test`의 `x`가 아닌 `Point`의 `x`를 참조하게 되었기 때문.
+```  
+이 경우 output은 `4.7 2 2`   
+Type casting으로 `Test`의 `x`가 아닌 `Point`의 `x`를 참조하게 되었기 때문.  
 
 ## Dynamic Binding
-
-컴파일 시점에는 해당 변수의 타입을 알 수 없고, 런타임에 JVM이 결정.
-
-이 경우는 Implicit Type을 기준으로 어떤 클래스를 참조할지 결정한다. 즉, “실제로” 어떤 클래스의 인스턴스인지가 중요하다.
-
-Override 된 함수는 dynamic binding 방식으로 어떤 클래스를 참조하여 함수를 호출하게 될지 결정된다.
-
-위의 예시와 달리 이번에는 overriding 해서 구현해보자.
+컴파일 시점에는 해당 변수의 타입을 알 수 없고, 런타임에 JVM이 결정.  
+이 경우는 Implicit Type을 기준으로 어떤 클래스를 참조할지 결정한다. 즉, “실제로” 어떤 클래스의 인스턴스인지가 중요하다.  
+Override 된 함수는 dynamic binding 방식으로 어떤 클래스를 참조하여 함수를 호출하게 될지 결정된다.  
+위의 예시와 달리 이번에는 overriding 해서 구현해보자.  
 
 ```java
 class Parent() {
@@ -125,15 +107,11 @@ public static void main(String[] args) {
 }
 ```
 
-Output은
-
+Output은  
 > Parent.print()  
 > Child.print()
-
-가 된다.
-
-Override 된 함수는 dynamic binding에 따라 actual type을 런타임에 참조하여 함수를 호출하기 때문이다. 
-
+가 된다.  
+Override 된 함수는 dynamic binding에 따라 actual type을 런타임에 참조하여 함수를 호출하기 때문이다.   
 ## 최종적인 예시 (Combination of Overloading, Overriding, and Hiding)
 
 ```java
@@ -186,7 +164,7 @@ class RealPoint extends Point {
 }
 ```
 
-위와 같이 클래스를 정의하고,
+위와 같이 클래스를 정의하고,  
 
 ```java
 public static void main(String[] args) {
@@ -203,8 +181,7 @@ public static void main(String[] args) {
 }
 ```
 
-`main` 함수 실행 결과는 
-
+`main` 함수 실행 결과는   
 > (0, 0)  
 > (2.71, 3.14)  
 > (2, 3)  
