@@ -55,7 +55,7 @@ public static void main(String[] args) {
 
 Output은 
 
-> Parent.print()
+> Parent.print()  
 > Parent.print()
 
 가 된다.
@@ -127,7 +127,7 @@ public static void main(String[] args) {
 
 Output은
 
-> Parent.print()
+> Parent.print()  
 > Child.print()
 
 가 된다.
@@ -205,9 +205,9 @@ public static void main(String[] args) {
 
 `main` 함수 실행 결과는 
 
-> (0, 0)
-> (2.71, 3.14)
-> (2, 3)
+> (0, 0)  
+> (2.71, 3.14)  
+> (2, 3)  
 > (2, 3)
 
 `main` 함수를 본다. 이 함수에는 RealPoint 클래스의 객체는 단 하나만 존재한다. 이것을 A라고 하자. 
