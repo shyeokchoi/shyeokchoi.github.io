@@ -55,15 +55,14 @@ public static void main(String[] args) {
 
 Output은 
 
-`Parent.print()`
-
-`Parent.print()`
+> Parent.print()
+> Parent.print()
 
 가 된다.
 
 `print()` 함수는 `static` 으로 선언되어 있기 때문에, static binding을 따른다. (override된 함수 제외하면 전부 static binding이다!) 그러므로 `child` 가 실제로 어떤 클래스의 인스턴스인지와는 상관 없이 컴파일 시점에 `child`의 explicit type인 `Parent` 클래스에 선언된 `print()` 를 호출하는 것으로 정해져있기 때문이다. 
 
-**<참고>**
+**참고**
 
 명시적으로 이루어지는 type casting은 explicit type을 바꿀 뿐, actual type에는 영향을 미치지 않는다.
 
@@ -128,9 +127,8 @@ public static void main(String[] args) {
 
 Output은
 
-`Parent.print()`
-
-`Child.print()`
+> Parent.print()
+> Child.print()
 
 가 된다.
 
@@ -208,13 +206,9 @@ public static void main(String[] args) {
 `main` 함수 실행 결과는 
 
 > (0, 0)
-> 
 > (2.71, 3.14)
-> 
 > (2, 3)
-> 
 > (2, 3)
-> 
 
 `main` 함수를 본다. 이 함수에는 RealPoint 클래스의 객체는 단 하나만 존재한다. 이것을 A라고 하자. 
 
