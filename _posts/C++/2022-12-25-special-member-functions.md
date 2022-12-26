@@ -195,9 +195,9 @@ copy constructor는 instantiation(`Test t2 = t1`)에서 사용되는 반면 copy
 syntax)  
 ```cpp
 class T {
-	T& operator= (const T &t) {
-		//copy assignment
-		return *this; //for chaining, return *this
-	}
+  T& operator= (const T &t) {
+    //copy assignment
+    return *this; //for chaining, return *this
+  }
 };
 ```
