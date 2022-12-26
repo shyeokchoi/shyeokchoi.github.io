@@ -36,10 +36,10 @@ Constructor body보다 먼저 실행된다.
 class Rectangle {
   int width, height;
 public:
-	Rectangle(int x, int y): width(x), height(y) { } //이게 member-initializer-list
-	int area() { 
-	return width * height; 
-	}
+  Rectangle(int x, int y): width(x), height(y) { } //이게 member-initializer-list
+  int area() {
+    return width * height;
+  }
 };
 ```  
 만약, parameter name과 data member name이 같으면, `this->`를 사용해 명확하게 표현해줘야 한다.  
@@ -48,9 +48,9 @@ public:
 ```cpp
 class X {
 public:
-	int a, b, i, j;
-	// i is different from this->i
-	X(int i): b(i), i(i-1), j(this->i) { }
+  int a, b, i, j;
+  // i is different from this->i
+  X(int i): b(i), i(i-1), j(this->i) { }
 };
 ```  
 위 예시에서 `X x(9);`로 객체를 생성하면, `x.b`, `x.i`, `x.j` 값은 차례로 9, 8, 8   
@@ -70,8 +70,8 @@ Constructor와 마찬가지로 `public section`에 정의된다.
 ```cpp
 class ClassName {
   ~ClassName() {
-		//destructor body
-	}
+    //destructor body
+  }
 };
 ```
 
@@ -79,27 +79,26 @@ class ClassName {
 #include <iostream> 
 class A {
 public:
-	int i;
+  int i;
   A (int i): i(i) {
     std::cout << "c" << i << ' ';
   }
 
-	~A() {
+  ~A() {
     std::cout << "d" << i << ' ';
-	} 
+  }
 };
 
 A a0(0);
 
 int main() {
   A a1(1);
-	A* p;
+  A* p;
   { // nested scope
     A a2(2);
     p = new A(3);
   } // a2 out of scope
   delete p;
-  // calls the destructor of p
 }
 ```  
 위 코드의 실행 결과는  
@@ -118,8 +117,8 @@ syntax:
 ```cpp
 class ClassName {
   ClassName(const ClassName& other) {
-		//Copy constructor body
-	}
+    //copy constructor body
+  }
 };
 ```
 
