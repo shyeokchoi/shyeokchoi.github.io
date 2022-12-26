@@ -36,10 +36,10 @@ class Child extends Parent {
 
 ```java
 public static void main(String[] args) {
-		Parent parent = new Parent();
-		Parent child = new Child();
-		parent.print();
-		child.print();
+    Parent parent = new Parent();
+    Parent child = new Child();
+    parent.print();
+    child.print();
 }
 ```
 
@@ -56,19 +56,23 @@ public static void main(String[] args) {
   
 예시)  
 ```java
-class Point { static int x = 2; }
+class Point { 
+    static int x = 2; 
+}
+
 class Test extends Point {
-  static double x = 4.7;
-  void printX() {
-    System.out.println(
-      x + " " + super.x + " " + ((Point)this).x);
+    static double x = 4.7;
+
+    void printX() {
+        System.out.println(x + " " + super.x + " " + ((Point)this).x);
+    }
 }
 ```
 
 ```java
 public static void main(String[] args) {
-		Test test = new Test(); 
-		test.printX();
+    Test test = new Test(); 
+    test.printX();
 }
 ```  
 이 경우 output은 `4.7 2 2`   
@@ -97,10 +101,10 @@ class Child extends Parent {
 
 ```java
 public static void main(String[] args) {
-		Parent parent = new Parent();
-		Parent child = new Child();
-		parent.print();
-		child.print();
+    Parent parent = new Parent();
+    Parent child = new Child();
+    parent.print();
+    child.print();
 }
 ```
 
@@ -121,7 +125,7 @@ class Point {
         y += dy;
     }
 		
-		int getX() {
+    int getX() {
         return x;
     }
 
@@ -143,7 +147,7 @@ class RealPoint extends Point {
     float y = 0.0f; // x, y: Hiding
 
     void move(int dx, int dy) { //overriding
-        move((float)dx, (float)dy); 
+        move((float)dx, (float)dy);
     }
 
     void move(float dx, float dy) { //overloading
@@ -165,16 +169,16 @@ class RealPoint extends Point {
 
 ```java
 public static void main(String[] args) {
-		RealPoint rp = new RealPoint();
-		Point p = rp;
-		
-		rp.move(1.71f, 4.14f);
-		p.move(1, -1);
-		
-		Point.show(p.x, p.y);
-		Point.show(rp.x, rp.y);
-		Point.show(p.getX(), p.getY());
-		Point.show(rp.getX(), rp.getY());
+    RealPoint rp = new RealPoint();
+    Point p = rp;
+    
+    rp.move(1.71f, 4.14f);
+    p.move(1, -1);
+    
+    Point.show(p.x, p.y);
+    Point.show(rp.x, rp.y);
+    Point.show(p.getX(), p.getY());
+    Point.show(rp.getX(), rp.getY());
 }
 ```
 

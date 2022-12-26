@@ -21,10 +21,10 @@ Default값 부여 예시)
 ```cpp
 class S {
 public:
-    int n = 7;
-    std::string s1 {"abc"};
-    float f = 3.141592;
-    std::string s2 = "DEF";
+  int n = 7;
+  std::string s1 {"abc"};
+  float f = 3.141592;
+  std::string s2 = "DEF";
 };
 ```
 ## member initializer list  
@@ -34,11 +34,11 @@ Constructor body보다 먼저 실행된다.
 예시)
 ```cpp
 class Rectangle {
-    int width, height;
+  int width, height;
 public:
 	Rectangle(int x, int y): width(x), height(y) { } //이게 member-initializer-list
 	int area() { 
-		return width * height; 
+	return width * height; 
 	}
 };
 ```  
@@ -69,7 +69,7 @@ Constructor와 마찬가지로 `public section`에 정의된다.
 해당 객체가 사용하던 resource를 해제하는 역할을 한다.  
 ```cpp
 class ClassName {
-	~ClassName() {
+  ~ClassName() {
 		//destructor body
 	}
 };
@@ -83,6 +83,7 @@ public:
   A (int i): i(i) {
     std::cout << "c" << i << ' ';
   }
+
 	~A() {
     std::cout << "d" << i << ' ';
 	} 
@@ -116,7 +117,7 @@ syntax:
 
 ```cpp
 class ClassName {
-    ClassName(const ClassName& other) {
+  ClassName(const ClassName& other) {
 		//Copy constructor body
 	}
 };
@@ -127,17 +128,17 @@ class ClassName {
 ```cpp
 class A {
 public:
-    int n;
-    A(int n = 1) : n(n) { }
-    A(const A& a) : n(a.n) { } //이게 copy constructor
+  int n;
+  A(int n = 1) : n(n) { }
+  A(const A& a) : n(a.n) { } //이게 copy constructor
 };
 
 #include <iostream>
 
 int main() {
-    A a1(7); 
-    A a2(a1); // == A a2 = a1;
-    std::cout << a2.n << std::endl; // 7
+  A a1(7); 
+  A a2(a1); // == A a2 = a1;
+  std::cout << a2.n << std::endl; // 7
 }
 ```  
 **Q) Copy constructor는 언제 호출되는가?**  
@@ -163,25 +164,25 @@ int main() {
 ```cpp  
 class Person {
 public:
-    int age;
-    Person(int age): age(age) {}
+  int age;
+  Person(int age): age(age) {}
 };
 
 class Student {
 public:
-    Person* person;
-    Student(Person* person): person(person) {};
+  Person* person;
+  Student(Person* person): person(person) {};
 };
 ```  
 위 코드의 경우 `Student` 클래스는 implicit copy constructor가 생성된다.  
 ```cpp
 int main() {
-    Person* personForStudent1 = new Person(24);
-    Student student1(personForStudent1);
-    std::cout << student1.person->age << std::endl;
-    Student student2(student1); //implicit copy constructor called
-    delete personForStudent1;
-    std::cout << student2.person->age << std::endl;
+  Person* personForStudent1 = new Person(24);
+  Student student1(personForStudent1);
+  std::cout << student1.person->age << std::endl;
+  Student student2(student1); //implicit copy constructor called
+  delete personForStudent1;
+  std::cout << student2.person->age << std::endl;
 }
 ```  
 위 `main()` 함수를 시행하면 `24 -494239696` 식으로, 첫번째는 제대로 된 값이 나오지만 두번째는 쓰레기값이 나온다.   
