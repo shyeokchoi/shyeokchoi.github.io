@@ -16,7 +16,7 @@ published: true
 **CS:APP LAB 자료 링크: <http://csapp.cs.cmu.edu/3e/labs.html>**  
 **혹시 잘못된 내용이 있다면 메일이나 댓글로 알려주시면 정말 감사하겠습니다**  
    
-전체 코드 git repository: https://github.com/qqq1130/SNU_System_Programming_2023_Spring/tree/master/malloclab/handout
+전체 코드 git repository: https://github.com/qqq1130/SNU_System_Programming  
 # Block들의 구조
 Free block의 경우 HEADER, PREV block pointer, NEXT block pointer, FOOTER 로, 총 4개의 word로 구성되어있습니다.  
 따라서 최소한의 크기는 16바이트가 됩니다. (해당 과제에서는 하나의 word size를 4바이트로 둡니다.)  
