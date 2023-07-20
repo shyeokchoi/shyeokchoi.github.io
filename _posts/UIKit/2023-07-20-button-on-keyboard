@@ -11,6 +11,7 @@ toc_sticky: true
  
 date: 2023-07-20
 last_modified_at: 2023-07-20
+published: true
 ---
 # 배경
 키보드가 올라오면서 키보드 자체가 / 또는 키보드와 함께 움직이는 뷰가 다른 뷰를 가릴 때가 있습니다. 예를 들어,  
