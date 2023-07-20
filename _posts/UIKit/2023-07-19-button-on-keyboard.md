@@ -2,7 +2,7 @@
 title:  "[UIKit] 화면 내의 뷰들 키보드와 함께 밀어올리기"
 
 categories:
-  - CSAPP
+  - UIKit
 tags:
   - [UIKit, iOS, Swift]
 
