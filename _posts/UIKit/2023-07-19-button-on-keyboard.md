@@ -26,21 +26,21 @@ published: true
     
 먼저, NotificationCenter를 활용해서 키보드가 올라가고 내려가는 것을 감지하는 코드를 작성합니다.  
 `viewDidLoad`에서 아래와 같은 `addKeyboardNotifications` 함수를 호출해주면 됩니다.    
-```Swift
+```swift
 func addKeyboardNotifications() {
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name:UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name:UIResponder.keyboardWillHideNotification, object: nil)
 }
 ```
 `viewWillDisappear`에선 `removeKeyboardNotifications` 함수를 호출해줍니다. 메모리 누수를 방지하기 위해서입니다.  
-```Swift
+```swift
 func removeKeyboardNotifications() {
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification , object: nil)
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 }
 ```
 이제, `keyboardWillShow`와 `keyboardWillHide` 함수를 채워넣어줄겁니다.  
-```Swift
+```swift
 @objc func keyboardWillShow(notification:NSNotification){
         
 }
@@ -52,13 +52,13 @@ func removeKeyboardNotifications() {
 # 키보드와 함께 움직이길 바라는 constraint들 빼내기
 위 사진을 보고 생각을 해 봅니다. 우리가 움직였으면 하는건 세 가지 입니다. Replay 버튼, Enter Room 버튼, Label과 TextField를 감싸고 있는 뷰 (이하 innerView).  
 그렇기 때문에 세 개의 constraint들을 인스턴스 변수로 빼내줍니다.   
-```Swift
+```swift
 var enterButtonBottomConstraint: NSLayoutConstraint?
 var replayButtonBottomConstraint: NSLayoutConstraint?
 var innerViewTopConstraint: NSLayoutConstraint?
 ```
 `enterButtonBottomConstraint`는 Enter Room 버튼의 bottomAnchor의 constraint입니다. 이 constraint만 키보드와 함께 움직여주면 Enter Room버튼 관련 UI를 다시 그릴 수 있습니다. 아래 코드를 보시면 이해가 되실 겁니다. Layout을 설정해주는 코드 일부입니다.     
-```Swift
+```swift
 view.addSubview(enterButton)
 enterButton.translatesAutoresizingMaskIntoConstraints = false
 enterButtonBottomConstraint = enterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24)
@@ -71,7 +71,7 @@ NSLayoutConstraint.activate([
 ```
 bottomAnchor만 바뀌면 leadingAnchor, trailingAnchor, heightAnchor 값들은 정해져있기 때문에 UI가 자동으로 그려집니다.  
 Replay버튼, innerView의 레이아웃 코드도 비슷합니다. 다음과 같습니다.  
-```Swift
+```swift
 view.addSubview(replayButton)
 replayButton.translatesAutoresizingMaskIntoConstraints = false
 replayButtonBottomConstraint = replayButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24)
@@ -95,7 +95,7 @@ NSLayoutConstraint.activate([
 ```
 이렇게 어떤 NSLayoutConstraint들이 필요할지 생각을 했고 잘 빼내줬으면 이를 이제 `keyboardWillShow`, `keyboardWillHide` 함수에서 활용해줍니다.  
 # keyboardWillShow, keyboardWillHide
-```Swift
+```swift
 @objc func keyboardWillShow(notification:NSNotification){
     if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
         let keyboardRectangle = keyboardFrame.cgRectValue
@@ -123,7 +123,7 @@ NSLayoutConstraint.activate([
 ```
 `keyboardWillShow` 함수입니다.  
 `buttonHeight`, `innerViewHeight`, `innerViewTop` 등은 제가 그냥 가독성을 높이려고 레이아웃 잡는데 썼던 상수들을 갖고온거니 신경쓰지 않으셔도 됩니다.  
-```Swift
+```swift
 if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
@@ -136,7 +136,7 @@ innerView의 맨 아랫부분은 `innerViewBottom`으로 구했습니다.
 이제, `innerViewBottom > buttonTopWhenKeyboardEnabled` 라면 이는 innerView가 버튼에 가려지는 상황입니다.   
 이때는 innerView의 top constraint를 위로 밀어올려야합니다. 굳이 top constraint로 잡은 것은 innerView 내부의 다른 뷰들이 다 innerView의 topAnchor를 기준으로 레이아웃이 잡혀 있어서, top constraint를 옮겨줘야 다른 뷰들도 따라가기 때문입니다.  
 겹치는 만큼 올려주고, 16만큼 더 올려줍니다. 16이란 숫자는 디자이너님이 정해주신 상수이지 별 의미는 없습니다.  
-```Swift
+```swift
 @objc func keyboardWillHide(notification:NSNotification){
     //go back to original constraints
     let buttonBottom = CGFloat(24)
