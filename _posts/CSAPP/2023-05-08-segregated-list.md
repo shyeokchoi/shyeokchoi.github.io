@@ -430,7 +430,8 @@ static void mm_check() {
 디버깅에 사용한 함수입니다.  
 segregated free list마다 내부에 있는 block들을 시각화해서 보여줍니다.
 # 결과물 
-![화면 캡처 2023-04-30 011425](https://user-images.githubusercontent.com/106307725/235312630-9bea2d18-e326-4bd1-b02f-d1fe260aa051.png)<br> 
+![화면 캡처 2023-04-30 011425](https://user-images.githubusercontent.com/106307725/235312630-9bea2d18-e326-4bd1-b02f-d1fe260aa051.png)<br>
+ 
 오히려 이전 게시물에서 다룬 explicit free list의 성능이 더 뛰어난 모습입니다.
 throughput은 둘 다 만점을 받았지만, segregated free list는 메모리의 활용 성능이 떨어지는 모습입니다.  
 아마 throughput 자체는 segregated list가 높을 것 같은데 만점이 40점이라 그런게 아닐까.. 싶습니다.  
