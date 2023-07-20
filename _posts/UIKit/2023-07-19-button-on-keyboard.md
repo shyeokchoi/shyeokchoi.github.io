@@ -149,7 +149,8 @@ innerView의 맨 아랫부분은 `innerViewBottom`으로 구했습니다.
 ```
 `keyboardWillHide` 함수는 간단합니다. 그냥 처음 레이아웃상 정해져있는 위치로 되돌려주면 됩니다.  
 # 결과물
-<img width="377" alt="스크린샷 2023-07-20 21 28 31" src="https://github.com/qqq1130/qqq1130.github.io/assets/106307725/5e377df4-9115-4bc1-8404-e076a331a474"> 
+<img width="377" alt="스크린샷 2023-07-20 21 28 31" src="https://github.com/qqq1130/qqq1130.github.io/assets/106307725/5e377df4-9115-4bc1-8404-e076a331a474"> <br>
+<br>
 버튼들과 innerView가 키보드와 함께 위로 올라가는 것을 볼 수 있습니다.  
 사실 이 기능 만들면서 시행착오도 많이 겪고 힘들었는데, 결국 디자이너님이 디자인 바꾸자고 하셔서.... 다 허사가 됐습니다ㅠ  
 그래서 블로그 글이라도 하나 남겼으니 만족합니다.  
