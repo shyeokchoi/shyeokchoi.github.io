@@ -129,9 +129,25 @@ if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrame
         let keyboardHeight = keyboardRectangle.height
 ```
 이 부분은 지금 올라온 키보드의 높이를 구하는 코드입니다.  
+```swift
+        replayButtonBottomConstraint?.constant = -keyboardHeight
+        enterButtonBottomConstraint?.constant = -keyboardHeight
+```
 이후, 구해온 키보드의 높이를 활용해 `replayButtonBottomConstraint`와 `enterButtonBottomConstraint`를 조정합니다.  
 bottomAnchor이기때문에 이 값을 -keyboardHeight로 설정해주면 화면 맨 아래에서부터 keyboardHeight만큼 버튼 전체가 밀려올라갑니다.  
+```swift
+        let safeAreaHeight = self.view.safeAreaLayoutGuide.layoutFrame.height
+        
+        let buttonTopWhenKeyboardEnabled = safeAreaHeight - (keyboardHeight + buttonHeight)
+        
+        let innerViewBottom = innerViewTop + innerViewHeight
+        
+        if (innerViewBottom > buttonTopWhenKeyboardEnabled) { //when pushing up the innerView is necessary (button covering the text field)
+            innerViewTopConstraint?.constant = innerViewTop - (innerViewBottom - buttonTopWhenKeyboardEnabled) - 16
+        }
+```
 그러고나면 두 버튼의 맨 위 높이를 구할 수 있게 될겁니다. 그게 `buttonTopWhenKeyboardEnabled`입니다.  
+여기서 iOS 화면의 Safe Area를 구해서 활용합니다.   
 innerView의 맨 아랫부분은 `innerViewBottom`으로 구했습니다.  
 이제, `innerViewBottom > buttonTopWhenKeyboardEnabled` 라면 이는 innerView가 버튼에 가려지는 상황입니다.   
 이때는 innerView의 top constraint를 위로 밀어올려야합니다. 굳이 top constraint로 잡은 것은 innerView 내부의 다른 뷰들이 다 innerView의 topAnchor를 기준으로 레이아웃이 잡혀 있어서, top constraint를 옮겨줘야 다른 뷰들도 따라가기 때문입니다.  
@@ -152,5 +168,5 @@ innerView의 맨 아랫부분은 `innerViewBottom`으로 구했습니다.
 <img width="377" alt="스크린샷 2023-07-20 21 28 31" src="https://github.com/qqq1130/qqq1130.github.io/assets/106307725/5e377df4-9115-4bc1-8404-e076a331a474"> <br>
 <br>
 버튼들과 innerView가 키보드와 함께 위로 올라가는 것을 볼 수 있습니다.  
-사실 이 기능 만들면서 시행착오도 많이 겪고 힘들었는데, 결국 디자이너님이 디자인 바꾸자고 하셔서.... 다 허사가 됐습니다ㅠ  
-그래서 블로그 글이라도 하나 남겼으니 만족합니다.  
+사실 이 기능 만들면서 시행착오도 많이 겪고 힘들었는데, 결국 디자이너님이 디자인 바꾸자고 하셔서.... 다른 디자인으로 구현하게 되었습니다 ㅜㅜ
+그래도 블로그 글이라도 하나 남겼으니 만족합니다.  
