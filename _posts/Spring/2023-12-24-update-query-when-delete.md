@@ -134,7 +134,7 @@ where
 혹시 양방향 연관관계가 생성된 게 아니라 단방향 연관관계 두 개가 생성된 것이었을까요?  
 그렇다면, 지금 생성된 연관관계의 주인이 누구인지 알아봐야 할 것입니다.
 
-- `Poll`
+## `Poll`
 
 ```java
 final Poll poll = new Poll();
@@ -158,32 +158,21 @@ entityManager.flush();
 하지만, 다음과 같은 쿼리가 실행되는 것을 볼 수 있습니다.  
 `insert into poll_items (created_at,deleted_at,poll_id,status,text,updated_at,id) values (?,?,?,?,?,?,default)`
 
-- `PollItem`
+## `PollItem`
 
-이번에는 반대로, `PollItem` 쪽에서만 poll을 세팅해주도록 하겠습니다.
+반대로, `PollItem` 쪽의 경우, foreign key가 정의되어 있는 테이블이고
 
 ```java
-final Poll poll = new Poll();
-
-poll.setTitle(someAlphanumericString(10));
-final Poll savedPoll = pollRepository.save(poll);
-
-IntStream.range(0, 2).forEach((i)-> {
-    PollItem pollItem = new PollItem();
-    pollItem.setText(someAlphanumericString(10));
-    pollItem.setPoll(poll); // **************************** 여기!!
-    entityManager.persist(pollItem); // **************************** 여기!!
-});
-
-entityManager.flush();
+PollItem pollItem = new PollItem();
+pollItem.setPoll(poll); // **************************** 여기!!
 ```
 
-만약 `PollItem`이 연관관계의 주인이라면, 해당 `Poll`의 pk를 fk로 갖는 `PollItem`들이 생성되어야 합니다.  
-실제로 다음과 같은 쿼리가 실행되었습니다.  
-`insert into poll_items (created_at,deleted_at,poll_id,status,text,updated_at,id) values (?,?,?,?,?,?,default)`
+위의 코드를 실행시킬 경우 foreign key가 관리된다는 점에서 `PollItem`도 연관관계의 주인 역할을 함을 알 수 있었습니다.
 
-**따라서, 양쪽에 `@JoinColumn`을 붙임으로 해서 양방향 연관관계 1개가 아니라, 단방향 연관관계 2개가 생성되었다고 추론해볼 수 있습니다.**  
-**그렇다면, `Poll`의 입장에선 일대다 단방향 매핑이기 때문에 child를 삭제할 때 위 블로그 글에서 언급하는, update 쿼리가 실행되는 문제가 발생하였다고 추론하였습니다.**
+## 결론
+
+따라서, 양쪽에 `@JoinColumn`을 붙임으로써 양방향 연관관계 1개가 아니라, 단방향 연관관계 2개가 생성되었다고 추론해볼 수 있습니다.  
+그렇다면, `Poll`의 입장에선 일대다 단방향 매핑이기 때문에 child를 삭제할 때 위 블로그 글에서 언급하는, update 쿼리가 실행되는 문제가 발생하였다고 추론하였습니다.
 
 # 해결
 
