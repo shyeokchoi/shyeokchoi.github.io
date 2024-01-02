@@ -44,7 +44,7 @@ public class Poll {
 @Table(name = "poll_items")
 @Getter
 @Setter
-public class PollItem implements ActEntity {
+public class PollItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
