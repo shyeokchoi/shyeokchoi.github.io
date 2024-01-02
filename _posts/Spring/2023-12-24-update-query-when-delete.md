@@ -113,7 +113,7 @@ where
 그렇다면 문제는 왜 앞의 `update` 문이 나가느냐 인데...
 
 관련 키워드로 구글링을 하다가 다음과 같은 글을 발견했습니다.  
-https://homoefficio.github.io/2019/04/28/JPA-%EC%9D%BC%EB%8C%80%EB%8B%A4-%EB%8B%A8%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91-%EC%9E%98%EB%AA%BB-%EC%82%AC%EC%9A%A9%ED%95%98%EB%A9%B4-%EB%B2%8C%EC%96%B4%EC%A7%80%EB%8A%94-%EC%9D%BC/
+[링크](https://homoefficio.github.io/2019/04/28/JPA-%EC%9D%BC%EB%8C%80%EB%8B%A4-%EB%8B%A8%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91-%EC%9E%98%EB%AA%BB-%EC%82%AC%EC%9A%A9%ED%95%98%EB%A9%B4-%EB%B2%8C%EC%96%B4%EC%A7%80%EB%8A%94-%EC%9D%BC/)
 
 > 일대다 조인컬럼 방식에서 children.remove(child)를 실행해서 children 쪽의 레코드 삭제를 시도하면 실제 쿼리는 delete가 아니라 해당 레코드의 parent_id에 null을 저장하는 update가 실행된다.  
 > 의도와 다르게 동작한 것 같아서 이상해보이지만, 일대다 단방향 매핑에서 children.remove(child)는 사실 child 자체를 삭제하라는 게 아니라 child가 parent의 children의 하나로 존재하는 관계를 remove 하라는 것이다.  
