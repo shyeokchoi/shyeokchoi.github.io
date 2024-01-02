@@ -127,12 +127,14 @@ where
 또, `@JoinColumn`이 양쪽에 붙는거 자체가 잘못된 용법이기때문에 무슨 일이 있었는지를 파악하는 데에 큰 의미는 없을것 같습니다.  
 하지만, 왜 위와 같은 일이 일어났는지 한 번 생각해보고 싶었습니다.
 
-<span style="color:orange">**아래 내용은 주니어 개발자인 제가 나름대로 고민해보면서 실험하고 결론내린 내용이지만, JPA에 대한 이해가 부족해 틀린 내용이 있을 수 있고, Hibernate코드를 직접 뜯어보지 않고 현상만을 가지고 추측한 내용이기에 이상하게 결론내린 부분이 있을 수 있습니다. 부정확한 정보를 건너뛰실 분들은 바로 `#해결`로 가시길 바랍니다.**</span>
+<span style="color:orange">**아래 내용은 주니어 개발자인 제가 나름대로 고민해보면서 실험하고 결론내린 내용입니다.**</span>  
+<span style="color:orange">**JPA에 대한 이해가 부족해 틀린 내용이 있을 수 있고, Hibernate코드를 직접 뜯어보지 않고 현상만을 가지고 추측한 내용이기에 이상하게 결론내린 부분이 있을 수 있습니다.**</span>  
+<span style="color:orange">**부정확한 정보를 건너뛰실 분들은 바로 `#해결`로 가시길 바랍니다.**</span>
 
 혹시 양방향 연관관계가 생성된 게 아니라 단방향 연관관계 두 개가 생성된 것이었을까요?  
 그렇다면, 지금 생성된 연관관계의 주인이 누구인지 알아봐야 할 것입니다.
 
-1. Poll
+- `Poll`
 
 ```java
 final Poll poll = new Poll();
@@ -156,8 +158,9 @@ entityManager.flush();
 하지만, 다음과 같은 쿼리가 실행되는 것을 볼 수 있습니다.  
 `insert into poll_items (created_at,deleted_at,poll_id,status,text,updated_at,id) values (?,?,?,?,?,?,default)`
 
-2. PollItem
-   이번에는 반대로, `PollItem` 쪽에서만 poll을 세팅해주도록 하겠습니다.
+- `PollItem`
+
+이번에는 반대로, `PollItem` 쪽에서만 poll을 세팅해주도록 하겠습니다.
 
 ```java
 final Poll poll = new Poll();
