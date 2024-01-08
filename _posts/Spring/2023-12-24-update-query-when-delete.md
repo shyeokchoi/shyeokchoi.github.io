@@ -1,5 +1,5 @@
 ---
-title: "[Spring JPA] @OneToMany에서 자식 테이블의 row를 삭제할 때 update 쿼리가 나가는 문제"
+title: "[JPA] @OneToMany에서 자식 테이블의 row를 삭제할 때 update 쿼리가 나간다면"
 
 categories:
   - Spring
