@@ -105,9 +105,9 @@ analytics:
 
 # Site Author
 author:
-  name: "최성혁"
+  name: "Sunghyeok choi"
   avatar: "/assets/images/bio-photo.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "개발자 지망생"
+  bio: "Junior Software Developer with a passion for web applications.  \nActively pursuing advanced skills in Java Spring."
   location: #"South Korea"
   email:
   links:
