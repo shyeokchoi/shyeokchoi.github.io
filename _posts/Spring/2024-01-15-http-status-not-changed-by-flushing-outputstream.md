@@ -1,5 +1,5 @@
 ---
-title: "[Spring] HTTP response status code가 의도와 다르게 내려갈 때"
+title: "[Spring] HttpServletResponse의 버퍼 flush로 인한 HTTP 상태 코드 오류"
 
 categories:
   - Spring
@@ -45,14 +45,14 @@ public ResponseEntity<ag.act.model.ErrorResponse> handleNotFoundException(NotFou
 }
 ```
 
-그런데, 테스트코드를 작성하다 보니 이상하게 자꾸 `post`에 연결된 `poll`이 없어도 Http status code가 200으로 내려오는 것이었습니다.  
+그런데, 테스트코드를 작성하다 보니 이상하게 자꾸 `post`에 연결된 `poll`이 없어도, 즉 `NotFoundException`이 발생하는 경우에도 Http status code가 200으로 내려오는 것이었습니다.  
 더 이상한건 응답에 "not found"라고 적혀있었다는 점.. 그러니까 `@ExceptionHandler` 어노테이션은 잘 작동했다는 점이었습니다.
 
 # 원인
 
 `csvWriter.writeNext()` 내부에서 `HttpServletResponse` 객체인 `response`의 `OutputStream`에 계속 `write()` 하는 것이 문제였습니다.  
 그러다 보면 `OutputStream` 내부의 버퍼가 차게 되고, 클라이언트로 해당 바이트들이 전송됩니다.  
-이 경우 한 번 Http status가 200으로 설정되었기 때문에, 중간에 예외가 발생해도 status code는 변경되지 않았던 것입니다.
+이 경우 한 번 Http status가 200으로 설정되어 전송되었기 때문에, 중간에 예외가 발생해도 status code는 변경되지 않았던 것입니다.
 
 # 해결
 
@@ -84,6 +84,6 @@ public void download(HttpServletResponse response, List<Post> posts) {
 }
 ```
 
-이렇게 하면 `csvWriter`는 일단 `tempStream`에 byte array를 적게 됩니다.  
+이렇게 하면 `csvWriter`는 일단 `tempStream`에 csv로 반환하고자 하는 byte array를 적게 됩니다.  
 이후, `tempStream`에 쌓여 있던 데이터를 `response.getOutputStream().write()` 함수를 통해 클라이언트에 전달합니다.  
 그러면 모든 작업이 끝나고 `response.getOutputStream().write()` 함수가 호출되기 전에 예외가 발생하면 의도했던대로 Http status code가 `@ExceptionHandler`에 의해 설정됩니다.
