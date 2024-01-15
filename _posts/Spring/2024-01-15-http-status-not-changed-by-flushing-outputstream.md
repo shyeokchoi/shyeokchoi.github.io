@@ -19,19 +19,19 @@ last_modified_at: 2024-01-15
 
 ```java
 public void download(HttpServletResponse response, List<Post> posts) {
-	try (CSVWriter csvWriter = new CSVWriter(response.getOutputStream())) {
-		posts.stream().forEach(post -> {
-			Poll poll = Optional.ofNullable(post.getPoll())
-				.orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
+    try (CSVWriter csvWriter = new CSVWriter(response.getOutputStream())) {
+	    posts.stream().forEach(post -> {
+            Poll poll = Optional.ofNullable(post.getPoll())
+                .orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
 
-			// some other logic using poll.
-		});
+            // some other logic using poll.
+        });
 
-		// some writing logic for csv.
-		csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
-	} catch (IOException e) {
-		// some kind of exception handling
-	}
+        // some writing logic for csv.
+        csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
+    } catch (IOException e) {
+        // some kind of exception handling
+    }
 }
 ```
 
@@ -60,27 +60,27 @@ public ResponseEntity<ag.act.model.ErrorResponse> handleNotFoundException(NotFou
 
 ```java
 public void download(HttpServletResponse response, List<Post> posts) {
-	if (CollectionUtils.isEmpty(posts)) {
-		return;
-	}
+    if (CollectionUtils.isEmpty(posts)) {
+        return;
+    }
 
-	try (ByteArrayOutputStream tempStream = new ByteArrayOutputStream()) {
-		try (CSVWriter csvWriter = initializeCsvWriter(tempStream)) {
-			posts.stream().forEach(post -> {
-				Poll poll = Optional.ofNullable(post.getPoll())
-					.orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
+    try (ByteArrayOutputStream tempStream = new ByteArrayOutputStream()) {
+        try (CSVWriter csvWriter = initializeCsvWriter(tempStream)) {
+            posts.stream().forEach(post -> {
+                Poll poll = Optional.ofNullable(post.getPoll())
+                    .orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
 
-				// some other logic using poll.
-			});
+                // some other logic using poll.
+            });
 
-			// some writing logic for csv.
-			csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
-		}
+            // some writing logic for csv.
+            csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
+        }
 
-		response.getOutputStream().write(tempStream.toByteArray());
-	} catch (IOException e) {
-		throw new InternalServerException("CSV 전자문서 다운로드 중 오류가 발생했습니다.", e);
-	}
+        response.getOutputStream().write(tempStream.toByteArray());
+    } catch (IOException e) {
+        throw new InternalServerException("CSV 전자문서 다운로드 중 오류가 발생했습니다.", e);
+    }
 }
 ```
 
