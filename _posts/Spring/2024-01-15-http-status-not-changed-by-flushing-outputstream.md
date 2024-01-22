@@ -17,33 +17,11 @@ last_modified_at: 2024-01-15
 
 백오피스 어드민 클라이언트의 요청에 따라 csv를 응답으로 제공하기 위해 아래와 같은 코드를 짰습니다.
 
-```java
-public void download(HttpServletResponse response, List<Post> posts) {
-    try (CSVWriter csvWriter = new CSVWriter(response.getOutputStream())) {
-	    posts.stream().forEach(post -> {
-            Poll poll = Optional.ofNullable(post.getPoll())
-                .orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
-
-            // some other logic using poll.
-        });
-
-        // some writing logic for csv.
-        csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
-    } catch (IOException e) {
-        // some kind of exception handling
-    }
-}
-```
+<script src="https://gist.github.com/shyeokchoi/5d3feb4081b25014c3335319ae3a4466.js"></script>
 
 여기서, `NotFoundException`은 `RuntimeException`을 상속한 custom exception으로, 아래와 같이 `@ExceptionHandler`를 설정해줘서 `NotFoundException`이 발생하면 Http status code를 404로 반환하도록 설정해두었습니다.
 
-```java
-@ExceptionHandler(NotFoundException.class)
-public ResponseEntity<ag.act.model.ErrorResponse> handleNotFoundException(NotFoundException ex) {
-    final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-    return new ResponseEntity<>("not found", httpStatus);
-}
-```
+<script src="https://gist.github.com/shyeokchoi/646145be011d935fd7d9c7b3d0de962f.js"></script>
 
 그런데, 테스트코드를 작성하다 보니 이상하게 자꾸 `post`에 연결된 `poll`이 없어도, 즉 `NotFoundException`이 발생하는 경우에도 Http status code가 200으로 내려오는 것이었습니다.  
 더 이상한건 응답에 "not found"라고 적혀있었다는 점.. 그러니까 `@ExceptionHandler` 어노테이션은 잘 작동했다는 점이었습니다.
@@ -58,31 +36,7 @@ public ResponseEntity<ag.act.model.ErrorResponse> handleNotFoundException(NotFou
 
 임시 `OutputStream`을 도입해서 해결했습니다.
 
-```java
-public void download(HttpServletResponse response, List<Post> posts) {
-    if (CollectionUtils.isEmpty(posts)) {
-        return;
-    }
-
-    try (ByteArrayOutputStream tempStream = new ByteArrayOutputStream()) {
-        try (CSVWriter csvWriter = initializeCsvWriter(tempStream)) {
-            posts.stream().forEach(post -> {
-                Poll poll = Optional.ofNullable(post.getPoll())
-                    .orElseThrow(() -> new NotFoundException("해당 글에 연결된 설문을 찾을 수 없습니다."));
-
-                // some other logic using poll.
-            });
-
-            // some writing logic for csv.
-            csvWriter.writeNext(new String[]{"this", "is", "just", "example"})
-        }
-
-        response.getOutputStream().write(tempStream.toByteArray());
-    } catch (IOException e) {
-        throw new InternalServerException("CSV 전자문서 다운로드 중 오류가 발생했습니다.", e);
-    }
-}
-```
+<script src="https://gist.github.com/shyeokchoi/2e071e36665717f4f547d49847228025.js"></script>
 
 이렇게 하면 `csvWriter`는 일단 `tempStream`에 csv로 반환하고자 하는 byte array를 적게 됩니다.  
 이후, `tempStream`에 쌓여 있던 데이터를 `response.getOutputStream().write()` 함수를 통해 클라이언트에 전달합니다.  
