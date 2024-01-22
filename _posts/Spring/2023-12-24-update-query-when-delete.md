@@ -18,67 +18,22 @@ last_modified_at: 2023-12-24
 어떤 설문조사를 실행하는 비즈니스 로직을 구현하기 위한 `Poll` 엔티티가 있고, 그 `Poll` 엔티티와 `@OneToMany` 관계를 갖고 있는 `PollItem` 엔티티가 있습니다.  
 `Poll`이 설문조사라면, `PollItem`은 설문조사에서 선택할 수 있는 선택지인 것입니다.
 
-```java
-@Entity
-@Table(name = "polls")
-@Getter
-@Setter
-public class Poll {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+<script src="https://gist.github.com/shyeokchoi/aaa050fe2cc176316af7db6dbf923f26.js"></script>
 
-    @Column(name = "title")
-    private String title;
-
-    @BatchSize(size = 100)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn("poll_id")
-    private List<PollItem> pollItemList;
-}
-```
-
-```java
-@Entity
-@Table(name = "poll_items")
-@Getter
-@Setter
-public class PollItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "text")
-    private String text;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "poll_id")
-    private Poll poll;
-}
-```
+<script src="https://gist.github.com/shyeokchoi/250df97871dd1ca16ae5bcadb455de7b.js"></script>
 
 위의 상태에서 저는 통합테스트를 작성하며 테스트간의 독립성을 유지하기 위해 매 테스트가 끝난 후 해당 테스트에서 생성되었던 `Poll`을 DB에서 삭제해주려 했습니다.
 
-```java
-Poll poll = post.getPoll(); // 게시글을 의미하는 post 엔티티에서 poll 엔티티를 꺼내온다.
-pollItemRepository.deleteAll(poll.getPollItemList());
-pollRepository.delete(poll);
-```
+<script src="https://gist.github.com/shyeokchoi/211a7077f2c8d82a9a506d35019bba2e.js"></script>
 
 이렇게요.  
 그러자,
 
-```sql
-update poll_items set poll_id=null where poll_id=?
-```
+<script src="https://gist.github.com/shyeokchoi/357343c79bc5d5a47dd5bdfc06296901.js"></script>
 
 이런 쿼리가 나가면서
 
-```
-could not execute statement [NULL not allowed for column "POLL_ID";
-```
+<script src="https://gist.github.com/shyeokchoi/0516b77e5f868362e5e94d0852f74970.js"></script>
 
 위와 같은 에러가 발생했습니다.  
 분명 저는 `PollItem`을 delete 하려고 했는데, `poll_items` 테이블에서 해당 `PollItem`들을 삭제해주는 것이 아니라,  
@@ -94,20 +49,7 @@ could not execute statement [NULL not allowed for column "POLL_ID";
 일단, 생성되는 쿼리를 처음부터 끝까지 확인하기 위해 DB에서 `poll_items` 테이블의 `poll_id` 컬럼에 대해 not null 제약조건을 뺐습니다.  
 그러자 아래와 같은 쿼리가 나가는 것을 확인했습니다.
 
-```sql
-update
-	poll_items
-set
-	poll_id=null
-where
-	poll_id=?
-
-delete
-from
-	poll_items
-where
-	id=?
-```
+<script src="https://gist.github.com/shyeokchoi/debe5d41c5f8fa4a96b1e903803b4e4c.js"></script>
 
 여기에서 뒤의 `delete` 문은 `Poll` 엔티티의 `pollItemList` 필드에 달린 `CascadeType.ALL` 설정 때문임을 해당 옵션을 제거해보고 확인할 수 있었습니다.  
 그렇다면 문제는 왜 앞의 `update` 문이 나가느냐 인데...
@@ -136,22 +78,7 @@ where
 
 ## `Poll`
 
-```java
-final Poll poll = new Poll();
-
-poll.setTitle(someAlphanumericString(10));
-
-List<PollItem> pollItems = new ArrayList<>();
-
-IntStream.range(0, 2).forEach((i)-> {
-    PollItem pollItem = new PollItem();
-    pollItem.setText(someAlphanumericString(10));
-    pollItems.add(pollItem);
-});
-
-poll.setPollItemList(pollItems); // **************************** 여기!!
-entityManager.flush();
-```
+<script src="https://gist.github.com/shyeokchoi/e687af615aa2a53366be06967f360ade.js"></script>
 
 위와 같은 코드로 `Poll`과 `PollItem`들을 초기화해서 DB에 저장하는 로직이 있다고 하겠습니다.  
 만약 `Poll`이 연관관계의 주인이 아니라면, `PollItem`에 해당하는 row는 생성되어서는 안 됩니다. 즉, `insert into poll_items ...` 식의 쿼리가 나가면 안 됩니다.  
@@ -162,10 +89,7 @@ entityManager.flush();
 
 반대로, `PollItem` 쪽의 경우, foreign key가 정의되어 있는 테이블이고
 
-```java
-PollItem pollItem = new PollItem();
-pollItem.setPoll(poll); // **************************** 여기!!
-```
+<script src="https://gist.github.com/shyeokchoi/cabeaf1463fbe22e09ad5112f8f116e2.js"></script>
 
 위의 코드를 실행시킬 경우 foreign key가 관리된다는 점에서 `PollItem`도 연관관계의 주인 역할을 함을 알 수 있었습니다.
 
@@ -181,35 +105,11 @@ pollItem.setPoll(poll); // **************************** 여기!!
 Many 쪽을 연관관계의 주인으로 설정해주고(외래키가 있는 곳이니까),  
 One 쪽을 `mappedBy`를 통해 inverse로 설정해줍니다.
 
-```java
-@Entity
-@Table(name = "polls")
-@Getter
-@Setter
-public class Poll {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "title")
-    private String title;
-
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<PollItem> pollItemList;
-}
-```
+<script src="https://gist.github.com/shyeokchoi/0b351d5d111890f8629ff122c630aeec.js"></script>
 
 그러자, (원했던대로) 다음과 같은 쿼리만 실행됩니다.
 
-```sql
-delete
-from
-	poll_items
-where
-	id=?
-```
+<script src="https://gist.github.com/shyeokchoi/9f0119d085a716b44efeda36df2dc2e9.js"></script>
 
 # 배운 점
 
