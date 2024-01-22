@@ -41,40 +41,19 @@ Configuration을 바꾸거나 bean을 바꾸거나 하면서 테스트를 하고
 DB의 테이블을 초기화해주는 클래스인 `DbCleaner`를 만들고, `@DirtiesContext`를 걷어내고 `DbCleaner`를 활용해 상황에 맞게 특정 테이블들만 초기화했습니다.  
 아래는 간략화한 코드입니다.
 
-```java
-@Component
-@Transactional
-public class DbCleaner {
-    private static final String POSTS = "posts";
-    private static final String POLLS = "polls";
-    private static final String POLL_ITEMS = "poll_items";
-    private static final String POLL_ANSWERS = "poll_answers";
-
-    @Autowired
-    private EntityManager entityManager;
-
-    public void clearPostRelatedTables() {
-        clearTables(POSTS, POLLS, POLL_ITEMS, POLL_ANSWERS);
-    }
-
-    private void clearTables(String... tableNames) {
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
-        Arrays.stream(tableNames)
-            .forEach(tableName ->
-                entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate()
-            );
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
-    }
-}
-```
+<script src="https://gist.github.com/shyeokchoi/bcf9479cdb2470dceecb516108b97a26.js"></script>
 
 예를 들어서, 테스트 중간에 게시글 테이블과 게시글과 관련된 테이블들을 초기화해줘야 하는 경우 `clearPostRelatedTables()` 함수를 호출해주면 됩니다.
+
+`L17`의
 
 ```java
 entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
 ```
 
 이 코드는 H2 DB에서 참조 무결성 검사를 비활성화합니다. 여기서는 foreign key 관련 제약조건들을 잠깐 비활성화하기 위해 실행되는 쿼리입니다.
+
+`L22`의
 
 ```java
 entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
