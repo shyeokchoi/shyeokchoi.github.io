@@ -63,7 +63,8 @@ DB의 테이블을 초기화해주는 클래스인 `DbCleaner`를 만들고, `@D
 생성자는 `TableNamesProvider` 인터페이스를 구현하는 클래스들을 의존성 주입 받은 후에, `DbCleanType` 이 주어졌을 때 바로 그에 연계된 `TableNamesProvider` 구현체를 골라낼 수 있도록 `Map` 을 생성합니다.
 
 테스트 코드에서 DB 테이블을 청소하고 싶을 때는 `clean()` 함수를 호출하게 됩니다.  
-이때 `DbCleanType`를 제공하면 `DbCleaner`가 적절한 `TableNamesProvider` 구현체를 골라내어 청소할 테이블들의 이름을 제공해줍니다.
+이때 `DbCleanType`를 제공하면 `DbCleaner`가 해당 `DbCleanType`에 맞는 테이블 이름들을 제공해줄, 적절한 `TableNamesProvider` 구현체를 골라냅니다.  
+이 `TableNamesProvider의 구현체`가 청소할 테이블들의 이름을 제공해줍니다.
 
 ## DbCleanType.java
 
