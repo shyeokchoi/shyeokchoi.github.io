@@ -6,8 +6,8 @@ categories:
 tags:
   - [book review, Unit Testing]
 
-toc: true
-toc_sticky: true
+toc: false
+toc_sticky: false
 
 date: 2024-02-16
 last_modified_at: 2024-02-16
