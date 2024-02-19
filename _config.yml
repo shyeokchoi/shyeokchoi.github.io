@@ -105,7 +105,7 @@ analytics:
 author:
   name: "Sunghyeok choi"
   avatar: "/assets/images/bio-photo.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "Junior Software Developer with a passion for web applications.  \nActively pursuing advanced skills in Java Spring."
+  # bio: "Junior Software Developer with a passion for web applications.  \nActively pursuing advanced skills in Java Spring."
   location: #"South Korea"
   email:
   links:
