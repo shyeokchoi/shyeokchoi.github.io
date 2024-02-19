@@ -32,7 +32,7 @@ masthead_title: # overrides the website title displayed in the masthead, use " "
 words_per_minute: 200
 future: true
 comments:
-  provider: "false" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
+  provider: "utterances" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
   discourse:
     server: # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
   facebook:
@@ -41,8 +41,8 @@ comments:
     num_posts: # 5 (default)
     colorscheme: # "light" (default), "dark"
   utterances:
-    theme: # "github-light" (default), "github-dark"
-    issue_term: # "pathname" (default)
+    theme: "github-light" # "github-light" (default), "github-dark"
+    issue_term: "pathname" # "pathname" (default)
   giscus:
     repo_id: # Shown during giscus setup at https://giscus.app
     category_name: # Full text name of the category
@@ -80,19 +80,19 @@ yandex_site_verification:
 baidu_site_verification:
 
 # Social Sharing
-twitter:
-  username:
-facebook:
-  username:
-  app_id:
-  publisher:
-og_image: # Open Graph/Twitter default site image
+# twitter:
+#   username:
+# facebook:
+#   username:
+#   app_id:
+#   publisher:
+# og_image: # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
-social:
-  type: # Person or Organization (defaults to Person)
-  name: # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+# social:
+#   type: # Person or Organization (defaults to Person)
+#   name: # If the user or organization name differs from the site's name
+#   links: # An array of links to social media profiles
 
 # Analytics
 analytics:
