@@ -32,9 +32,7 @@ masthead_title: # overrides the website title displayed in the masthead, use " "
 words_per_minute: 200
 future: true
 comments:
-  provider: "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
-  disqus:
-    shortname: "qqq981130" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
+  provider: "false" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
   discourse:
     server: # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
   facebook:
