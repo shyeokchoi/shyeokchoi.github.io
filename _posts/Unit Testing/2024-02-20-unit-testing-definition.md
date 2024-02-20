@@ -63,11 +63,11 @@ Shared state가 존재하지 않는 한, 여러 개의 클래스도 단위가 �
 
 `Store` 객체가 `Cashier`, `InventoryManager` 객체를 주입받아서 물건을 파는 코드입니다.
 
-예를 들어서, Mockist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 같습니다.
+위 코드에 대해, Mockist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 같습니다.
 
 <script src="https://gist.github.com/shyeokchoi/e9c431f1607f18319f72ea3e67aecd6c.js"></script>
 
-반면, Classicist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 같습니다.
+Classicist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 같습니다.
 
 <script src="https://gist.github.com/shyeokchoi/ab6b9a2977a257c9e16fa01f281f4b62.js"></script>
 
