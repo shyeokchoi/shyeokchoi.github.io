@@ -52,7 +52,7 @@ Shared state가 존재하지 않는 한, 여러 개의 클래스도 단위가 �
 # Mockist 스타일 단위 테스트의 장점 & 반박
 
 > 해당 책의 저자는 Classicist 쪽이기 때문에, Mockist 방식의 장점을 반박하고 있습니다.  
-> 하지만 동시에 Mockist 쪽의 의견을 담은 [책](https://www.amazon.com/Growing-Object-Oriented-Software-Guided-Tests/dp/0321503627/ref=sr_1_1?crid=2YGT33LDSTSMA&dib=eyJ2IjoiMSJ9.NmnWLiDJQPuJFhP-14EkBOikcnkuBuB9YNjsZNcP0GLGjHj071QN20LucGBJIEps.WleK2QX2QpV94_GTv8ehtwCTAy2oG26xHnpEo747zyA&dib_tag=se&keywords=Growing+Object-Oriented+Software%2C+Guided+by+Tests&qid=1708361281&sprefix=growing+object-oriented+software%2C+guided+by+tests%2Caps%2C260&sr=8-1)도 소개하고 있습니다. 흥미가 가시는 분은 한 번 읽어보면 좋을 것 같습니다. (저도 읽어보려구요!)
+> 하지만 동시에 Mockist 쪽의 의견을 담은 [책](https://www.amazon.com/Growing-Object-Oriented-Software-Guided-Tests/dp/0321503627/ref=sr_1_1?crid=2YGT33LDSTSMA&dib=eyJ2IjoiMSJ9.NmnWLiDJQPuJFhP-14EkBOikcnkuBuB9YNjsZNcP0GLGjHj071QN20LucGBJIEps.WleK2QX2QpV94_GTv8ehtwCTAy2oG26xHnpEo747zyA&dib_tag=se&keywords=Growing+Object-Oriented+Software%2C+Guided+by+Tests&qid=1708361281&sprefix=growing+object-oriented+software%2C+guided+by+tests%2Caps%2C260&sr=8-1)도 소개하고 있습니다. 흥미가 가시는 분은 한 번 읽어보면 좋을 것 같습니다.
 
 실제 예제 코드를 작성해가며, Mockist와 Classicist의 접근을 비교하겠습니다.  
 먼저, 테스트에 사용될 코드는 다음과 같습니다.
