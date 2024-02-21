@@ -1,5 +1,5 @@
 ---
-title: "[Unit Testing] 유닛 테스트의 정의 & Classicist vs. Mockist"
+title: "[Unit Testing] 단위 테스트란?: Classicist vs. Mockist"
 
 categories:
   - Unit Testing Principles, Practices and Patterns
@@ -15,7 +15,7 @@ last_modified_at: 2024-02-20
 
 > [Unit Testing Principles, Practices, and Patterns](https://www.amazon.com/Unit-Testing-Principles-Practices-Patterns/dp/1617296279)를 읽고 내용을 정리한 글입니다.
 
-# 유닛 테스트의 정의
+# 단위테스트(Unit Test)의 정의
 
 1. 작은 단위(unit)만을 검증한다.
 2. 빠르게 실행가능하다.
@@ -23,7 +23,7 @@ last_modified_at: 2024-02-20
 
 **여기서 핵심은 독립성. 그리고 이 독립성을 어떻게 정의하는지가 Classicist와 Mockist의 의견이 갈리는 지점입니다.**
 
-# 독립성의 정의에 대한 Classicist vs. Mockist 의견 차이
+# Classicist vs. Mockist
 
 ## Classicist
 
@@ -36,7 +36,7 @@ Classicist가 말하는 독립성은, `테스트들 사이의 독립성` 입니�
 Mockist가 말하는 독립성은, `협력 클래스들로부터의 격리` 입니다.  
 즉, 어떤 클래스가 테스트의 대상이 된다면, 그 클래스가 의존하고 있는 다른 클래스들은 모두 mocking 되어야 한다는 의미입니다.
 
-## 이 차이로부터 이끌어진 결론
+## 결론
 
 Classicist가 말하는 단위, 즉 `unit`은 클래스 하나를 의미하는 것이 아닙니다.  
 Shared state가 존재하지 않는 한, 여러 개의 클래스도 단위가 될 수 있습니다.
@@ -78,7 +78,9 @@ Classicist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 �
 > 클래스 하나가 단위이기 때문에, 더 세밀한 테스트가 가능하다.
 
 위 Mockist 테스트 코드에서는, `Cashier`와 `InventoryManager`의 구현과는 상관없이 `Store`의 로직만을 테스트합니다.  
-제대로 `InventoryManager`의 도움을 받아 재고를 감소시키고 있는지, `Cashier`의 도움을 받아 계산을 하는 로직이 추가되어 있는지, 등등.
+제대로 `InventoryManager`의 함수를 호출하고 있는지, `Cashier`를 활용해 계산을 하는 로직이 추가되어 있는지 등을 아래 코드를 통해서 확인합니다.
+
+<script src="https://gist.github.com/shyeokchoi/c12125c918b9a2f652e0f0d6a979011d.js"></script>
 
 이런 식으로 `Cashier`와 `InventoryManager`에 대해서도 따로 테스트코드가 작성될 것입니다.
 
@@ -105,15 +107,35 @@ Classicist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 �
 > 테스트의 대상이 되는 클래스가 굉장히 복잡한 의존성 그래프에 속해있을 때, immediate dependency만 mocking하면, 그래프를 타고 내려가며 계속 의존성을 주입해줄 필요가 없어진다.  
 > 즉, 테스트 준비에 드는 시간이 줄어든다.
 
+Classicist 코드를 보면,
+
+<script src="https://gist.github.com/shyeokchoi/1e50a6fb2f63abca469f8c9c1de23d5c.js"></script>
+
+이렇게 의존성을 주입해주는 부분이 있습니다.
+
+반면, Mockist는
+
+<script src="https://gist.github.com/shyeokchoi/8997d29e102984a8ec49802299d22ec0.js"></script>
+
+이렇게 어노테이션만으로 처리합니다.
+
+Mockist의 경우 `Cashier`와 `InventoryManager` 자체를 모킹하기 때문에, 이 클래스들이 의존하는 map 들의 주입은 신경쓸 필요 없습니다.  
+`Store`, `Cashier`, `InventoryManager`가 더 많은 클래스들에 의존할수록 이 차이는 커질 것입니다.
+
 ### 반박
 
 > 문제에 대한 접근 자체가 잘못되었다.  
 > 복잡한 의존성 그래프가 생성되는 것은 테스트 코드의 문제가 아니라, 운영 코드 디자인 상의 문제를 시사한다.  
 > 오히려 단위 테스트가 이 점을 짚어주는 시험지 역할을 한다는 점이 Classicist 접근의 장점이다.
 
+저자는 이 경우, 애초에 운영 코드가 잘못된 것이지 테스트코드 작성 방식이 문제가 아니라고 주장합니다.  
+이 내용은 책 뒷부분에서 다시 정리한다고 하니, 나중에 더 자세히 정리하겠습니다.
+
 ## 버그 지점을 정확히 특정 가능
 
 > 테스트 실패 시, `SUT`에 버그가 있음이 확실하다.
+
+의미상의 기능 단위가 아닌, 각 클래스마다 테스트코드가 작성되기 때문에 어느 클래스에서 버그가 발생했는지 바로 알 수 있습니다.
 
 ### 반박
 
@@ -122,9 +144,18 @@ Classicist 방식으로 `Store`에 대한 테스트를 작성하면 다음과 �
 > 또, 하나의 변경이 많은 테스트 실패를 야기하는 것은 오히려 좋을 수도 있다.  
 > 지금 수정한 코드가 어디에 영향을 주는지 알 수 있으니.
 
+하나의 클래스에 적용된 변경이 많은 테스트 실패를 야기하는 것은 모킹을 사용하면 불가능한 일입니다.  
+해당 클래스를 주입받는 곳들에선 실제 클래스가 아닌 모킹된 클래스를 주입받고, 의도한대로 작동한다고 가정하고 테스트가 진행되기 때문입니다.  
+이는 방금 이루어진 변경사항이 운영 코드에선 어떻게 전파되어 어디까지 영향을 미칠지 파악하기 힘들게 만듭니다.
+
 ## 그 외 Mockist들을 향한 비판
 
 > Mockist들의 테스트 코드는 `결과`가 아니라 `구현`을 검증하게 되는 경향이 있다.
+
+<script src="https://gist.github.com/shyeokchoi/c12125c918b9a2f652e0f0d6a979011d.js"></script>
+
+제가 작성한 이 테스트코드가 `구현`을 검증하는 대표적인 예시라고 볼 수 있습니다.  
+저자는 이렇게 `구현`을 검증하기보다는 특정 시나리오에 대해 올바른 결과가 발생하는지를 검증해야 한다고 보는 것입니다.
 
 # Integration Test(통합 테스트)에 대한 Classicist, Mockist의 의견
 
