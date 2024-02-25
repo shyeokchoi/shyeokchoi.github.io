@@ -18,7 +18,7 @@ last_modified_at: 2024-02-25
 # Observable behavior와 Implementation detail
 ## Observable Behavior?
 아래 두 조건 중 하나를 만족한다면, `Observable Behavior` 라고 할 수 있습니다.  
-참고로 여기서 Client는 그것이 진짜 "고객"이든, 다른 시스템이든, 다른 클래스든 상관없이 현재 `SUT`의 API를 사용하는 대상을 의미합니다.  
+참고로 여기서 Client는 그것이 진짜 고객(end user)이든, 다른 시스템이든, 다른 클래스든 상관없이 현재 `SUT`의 API를 사용하는 대상을 의미합니다.  
 
 1. Client가 목적을 이루기 위해 필요한 작업
 2. Client가 목적을 이루기 위해 참고할 상태
