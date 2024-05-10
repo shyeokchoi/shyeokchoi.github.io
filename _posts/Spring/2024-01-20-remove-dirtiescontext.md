@@ -107,7 +107,7 @@ DB의 테이블을 초기화해주는 클래스인 `DbCleaner`를 만들고, `@D
 하지만, 이렇게 실제 빌드에 걸리는 시간이 줄어든 것을 보면, `Spring Application Context` 재생성에 얼마나 많은 시간이 걸리는지 짐작할 수 있습니다.
 
 # 왜 @Transactional을 이용한 초기화를 사용하지 않았는가?
-이 부분은 [향로님의 블로그](https://jojoldu.tistory.com/76)를 참고했습니다.  
+이 부분은 [향로님의 블로그](https://jojoldu.tistory.com/761)를 참고했습니다.  
 
 요약하자면,  
 
